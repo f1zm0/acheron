@@ -1,0 +1,5 @@
+.vim
+build/
+dist/
+test_files/
+test_scripts/

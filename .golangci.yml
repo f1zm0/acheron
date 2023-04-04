@@ -1,0 +1,44 @@
+skip-dirs:
+  - dist
+  - data
+issues:
+  exclude-use-default: false
+output:
+  format: colored-line-number
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bidichk
+    - decorder
+    - durationcheck
+    - errcheck
+    - errname
+    - goconst
+    - gocyclo
+    - godot
+    - godox
+    - gofumpt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - revive
+    - staticcheck
+    - typecheck
+    - unconvert
+    - unused
+linters-settings:
+  gofumpt:
+    lang-version: "1.18"
+    extra-rules: true
+  godox:
+    keywords:
+      - FIXME
+  lll:
+    line-length: 140
+    tab-width: 1
