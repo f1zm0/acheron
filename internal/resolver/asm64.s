@@ -6,11 +6,11 @@ TEXT ·getNtdllBaseAddr(SB),$0
     MOVQ 0x30(GS), AX
     MOVQ 0x60(AX), AX
 
-	// PEB->Ldr
-	MOVQ 0x18(AX), AX
+    // PEB->Ldr
+    MOVQ 0x18(AX), AX
 
-	// PEB->Ldr->InMemoryOrderModuleList
-	MOVQ 0x20(AX), AX
+    // PEB->Ldr->InMemoryOrderModuleList
+    MOVQ 0x20(AX), AX
 
     // PEB->Ldr->InMemoryOrderModuleList->Flink (ntdll.dll)
     MOVQ (AX), AX
@@ -18,8 +18,8 @@ TEXT ·getNtdllBaseAddr(SB),$0
     // PEB->Ldr->InMemoryOrderModuleList->Flink DllBase
     MOVQ 0x20(AX), AX
 
-	MOVQ AX, ret+0(FP)
-	RET
+    MOVQ AX, ret+0(FP)
+    RET
 
 
 // func getModuleEATAddr (moduleBase uintptr) uintptr
@@ -41,7 +41,7 @@ TEXT ·getModuleEATAddr(SB),$0-8
     // AX = ntdll base + IMAGE_DATA_DIRECTORY.VirtualAddress
     ADDL 0x0(R15), R14
     ADDQ R14, AX
-    
+
     MOVQ AX, ret+8(FP)
     RET
 
