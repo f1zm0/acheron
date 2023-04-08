@@ -1,5 +1,7 @@
+#include "textflag.h"
+
 // func getNtdllBaseAddr() uintptr
-TEXT ·getNtdllBaseAddr(SB),$0
+TEXT ·getNtdllBaseAddr(SB),NOSPLIT,$0
 
     // TEB->ProcessEnvironmentBlock
     XORQ AX, AX
@@ -23,7 +25,7 @@ TEXT ·getNtdllBaseAddr(SB),$0
 
 
 // func getModuleEATAddr (moduleBase uintptr) uintptr
-TEXT ·getModuleEATAddr(SB),$0-8
+TEXT ·getModuleEATAddr(SB),NOSPLIT,$0-8
     MOVQ moduleBase+0(FP), AX
 
     XORQ R15, R15
@@ -47,7 +49,7 @@ TEXT ·getModuleEATAddr(SB),$0-8
 
 
 // func getEATNumberOfFunctions(exportsBase uintptr) uint32
-TEXT ·getEATNumberOfFunctions(SB),$0-8
+TEXT ·getEATNumberOfFunctions(SB),NOSPLIT,$0-8
     MOVQ exportsBase+0(FP), AX
 
     XORQ R15, R15
@@ -60,7 +62,7 @@ TEXT ·getEATNumberOfFunctions(SB),$0-8
 
 
 // func getEATAddressOfFunctions(moduleBase,exportsBase uintptr) uintptr
-TEXT ·getEATAddressOfFunctions(SB),$0-16
+TEXT ·getEATAddressOfFunctions(SB),NOSPLIT,$0-16
     MOVQ moduleBase+0(FP), AX
     MOVQ exportsBase+8(FP), R8
 
@@ -77,7 +79,7 @@ TEXT ·getEATAddressOfFunctions(SB),$0-16
 
 
 // func getEATAddressOfNames(moduleBase,exportsBase uintptr) uintptr
-TEXT ·getEATAddressOfNames(SB),$0-16
+TEXT ·getEATAddressOfNames(SB),NOSPLIT,$0-16
     MOVQ moduleBase+0(FP), AX
     MOVQ exportsBase+8(FP), R8
 
