@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/f1zm0/acheron/internal/resolver"
-	wt "github.com/f1zm0/acheron/internal/types"
 	"github.com/f1zm0/acheron/pkg/hashing"
 )
 
@@ -13,7 +12,7 @@ type ssnSortResolver struct {
 	hasher hashing.Hasher
 
 	// map of Zw* InMemProc structs indexed by their name's hash
-	zwStubs map[int64]wt.InMemProc
+	zwStubs map[int64]*resolver.ZwStub
 
 	// slice with addresses of clean gadgets
 	safeGates []uintptr
@@ -22,7 +21,9 @@ type ssnSortResolver struct {
 var _ resolver.Resolver = (*ssnSortResolver)(nil)
 
 func NewResolver(h hashing.Hasher) (resolver.Resolver, error) {
-	r := &ssnSortResolver{}
+	r := &ssnSortResolver{
+		hasher: h,
+	}
 	if err := r.init(); err != nil {
 		return nil, err
 	}
@@ -30,17 +31,9 @@ func NewResolver(h hashing.Hasher) (resolver.Resolver, error) {
 }
 
 func (r *ssnSortResolver) init() error {
-	// var zwStubs []wt.InMemProc
+	ntMod := resolver.ParseNtdllModule(r.hasher)
+	_ = ntMod
 
-	_, err := resolver.GetNtdllModuleHandle()
-	if err != nil {
-		return err
-	}
-
-	// exports, err := hNtdll.File.Exports()
-	// if err != nil {
-	// 	return err
-	// }
 	// for _, exp := range exports {
 	// 	memAddr := int64(hNtdll.BaseAddr) + int64(exp.VirtualAddress)
 	// 	r.safeGates = resolver.FindSyscallRetGadgets(hNtdll)
