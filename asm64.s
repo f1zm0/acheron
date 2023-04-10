@@ -11,8 +11,8 @@ TEXT ·execIndirectSyscall(SB), $0-56
 	MOVW    ssn+0(FP), AX
 	PUSHQ   CX
 
-        XORQ    BX,BX
-        MOVQ    gateAddr+8(FP),BX
+    XORQ    BX,BX
+    MOVQ    gateAddr+8(FP),BX
 
 	//put variadic pointer into SI
 	MOVQ    argh_base+16(FP),SI
@@ -57,8 +57,8 @@ loadregs:
 
 	MOVQ    CX, R10
 
-        // jump to gate instead of direct syscall
-        CALL BX
+    // jump to gate instead of direct syscall
+    CALL BX
 
 	ADDQ	$((maxargs+1)*8), SP
 
