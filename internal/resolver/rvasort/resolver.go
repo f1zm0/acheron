@@ -10,14 +10,14 @@ import (
 )
 
 type ssnSortResolver struct {
-	hasher           hashing.Hasher
+	hasher           hashing.HashFunction
 	zwStubs          map[int64]*resolver.Syscall
 	cleanTrampolines []uintptr
 }
 
 var _ resolver.Resolver = (*ssnSortResolver)(nil)
 
-func NewResolver(h hashing.Hasher) (resolver.Resolver, error) {
+func NewResolver(h hashing.HashFunction) (resolver.Resolver, error) {
 	r := &ssnSortResolver{
 		hasher: h,
 	}

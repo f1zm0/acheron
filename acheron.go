@@ -11,23 +11,20 @@ type Acheron struct {
 }
 
 type (
-	// Option is a configuration option which can be used within
-	// a call to the constructor to configure the Acheron instance.
+	// Option is a configuration option to configure the Acheron instance.
 	Option func(*options)
 )
 
 type options struct {
-	hasher hashing.Hasher
+	hasher hashing.HashFunction
 }
 
 // New returns a new Acheron instance that can be used as a proxy to perform
 // indirect syscalls for native api functions, or an error if the initialization fails.
 func New(opts ...Option) (*Acheron, error) {
-	// defaults
 	options := &options{
-		hasher: hashing.NewDjb2(),
+		hasher: hashing.DJB2,
 	}
-
 	for _, o := range opts {
 		o(options)
 	}
@@ -43,7 +40,7 @@ func New(opts ...Option) (*Acheron, error) {
 
 // WithHashFunction returns an Option that sets a custom hashing (or obfuscation)
 // function that will be used when resolving native api procedures by hash.
-func WithHashFunction(f hashing.Hasher) Option {
+func WithHashFunction(f hashing.HashFunction) Option {
 	return func(o *options) {
 		o.hasher = f
 	}

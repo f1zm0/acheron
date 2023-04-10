@@ -15,7 +15,7 @@ type Syscall struct {
 
 // ParseNtdllModule returns a NtModule struct with the relevant infortion
 // about the in-ry ntdll.dll dule.
-func ParseNtdllModule(hashFn hashing.Hasher) []*Syscall {
+func ParseNtdllModule(hashFn hashing.HashFunction) []*Syscall {
 	baseAddr := getNtdllBaseAddr()
 	exportsBaseAddr := getModuleExportsDirAddr(baseAddr)
 	numberOfNames := getExportsNumberOfNames(exportsBaseAddr)
@@ -29,7 +29,7 @@ func ParseNtdllModule(hashFn hashing.Hasher) []*Syscall {
 		if fn[0] != 'Z' || fn[1] != 'w' {
 			continue
 		}
-		fnHash := hashFn.HashByteString(fn)
+		fnHash := hashFn(fn)
 		nameOrd := memory.ReadWordAt(addressOfNameOrdinals, i*2)
 		rva := memory.ReadDwordAt(addressOfFunctions, uint32(nameOrd*4))
 
