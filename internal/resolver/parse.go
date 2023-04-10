@@ -6,7 +6,7 @@ import (
 )
 
 type Syscall struct {
-	NameHash       int64
+	NameHash       uint64
 	RVA            uint32
 	VA             uintptr
 	SSN            uint16

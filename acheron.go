@@ -51,7 +51,7 @@ func New(opts ...Option) (*Acheron, error) {
 
 // Syscall executes a syscall with the given function hash and arguments.
 // Returns the error code and an error if the syscall failed.
-func (a *Acheron) Syscall(fnHash int64, args ...uintptr) error {
+func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
 	sys, err := a.resolver.GetSyscall(fnHash)
 	if err != nil {
 		return err

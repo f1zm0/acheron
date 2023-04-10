@@ -11,7 +11,7 @@ import (
 
 type ssnSortResolver struct {
 	hasher           hashing.HashFunction
-	zwStubs          map[int64]*resolver.Syscall
+	zwStubs          map[uint64]*resolver.Syscall
 	cleanTrampolines []uintptr
 }
 
@@ -35,7 +35,7 @@ func NewResolver(h hashing.HashFunction) (resolver.Resolver, error) {
 		}
 	}
 
-	r.zwStubs = make(map[int64]*resolver.Syscall, len(zwStubs))
+	r.zwStubs = make(map[uint64]*resolver.Syscall, len(zwStubs))
 	for idx, st := range zwStubs {
 		st.SSN = uint16(idx)
 
@@ -57,7 +57,7 @@ func NewResolver(h hashing.HashFunction) (resolver.Resolver, error) {
 	return r, nil
 }
 
-func (r *ssnSortResolver) GetSyscall(fnHash int64) (*resolver.Syscall, error) {
+func (r *ssnSortResolver) GetSyscall(fnHash uint64) (*resolver.Syscall, error) {
 	if v, ok := r.zwStubs[fnHash]; ok {
 		return v, nil
 	}
