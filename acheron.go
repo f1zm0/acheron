@@ -2,7 +2,7 @@ package acheron
 
 import (
 	"github.com/f1zm0/acheron/internal/resolver"
-	"github.com/f1zm0/acheron/internal/resolver/ssnsort"
+	"github.com/f1zm0/acheron/internal/resolver/rvasort"
 	"github.com/f1zm0/acheron/pkg/hashing"
 )
 
@@ -32,7 +32,7 @@ func New(opts ...Option) (*Acheron, error) {
 		o(options)
 	}
 
-	if r, err := ssnsort.NewResolver(options.hasher); err != nil {
+	if r, err := rvasort.NewResolver(options.hasher); err != nil {
 		return nil, err
 	} else {
 		return &Acheron{

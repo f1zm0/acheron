@@ -8,13 +8,11 @@ import (
 // Syscall executes a syscall with the given function hash and arguments.
 // Returns the error code and an error if the syscall failed.
 func (a *Acheron) Syscall(fnHash int64, args ...uintptr) error {
-	ssn, err := a.resolver.GetSyscallSSN(fnHash)
+	sys, err := a.resolver.GetSyscall(fnHash)
 	if err != nil {
 		return err
 	}
-	gateAddr := a.resolver.GetSafeGate()
-
-	if errCode := execIndirectSyscall(ssn, gateAddr, args...); errCode != 0 {
+	if errCode := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); errCode != 0 {
 		return errors.New(fmt.Sprintf("syscall failed with error code %d", errCode))
 	}
 	return nil
