@@ -22,16 +22,14 @@ type options struct {
 	hasher hashing.HashFunction
 }
 
-// WithHashFunction returns an Option that sets a custom hashing (or obfuscation)
-// function that will be used when resolving native api procedures by hash.
+// WithHashFunction returns an Option that sets a custom hashing or obfuscation function.
 func WithHashFunction(f hashing.HashFunction) Option {
 	return func(o *options) {
 		o.hasher = f
 	}
 }
 
-// New returns a new Acheron instance that can be used as a proxy to perform
-// indirect syscalls for native api functions, or an error if the initialization fails.
+// New returns a new Acheron instance with the given options, or an error if initialization fails.
 func New(opts ...Option) (*Acheron, error) {
 	options := &options{
 		hasher: hashing.DJB2,
@@ -49,8 +47,8 @@ func New(opts ...Option) (*Acheron, error) {
 	}
 }
 
-// Syscall executes a syscall with the given function hash and arguments.
-// Returns the error code and an error if the syscall failed.
+// Syscall executes an indirect syscall with the given function hash and arguments.
+// Returns the error code returned by the syscall is something goes wrong.
 func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
 	sys, err := a.resolver.GetSyscall(fnHash)
 	if err != nil {
@@ -62,6 +60,4 @@ func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
 	return nil
 }
 
-// execIndirectSyscall function signature for go-asm impelementation.
-// returns 0 if the syscall was successful or an error code if the operation failed.
 func execIndirectSyscall(ssn uint16, gateAddr uintptr, argh ...uintptr) (errcode uint32)
