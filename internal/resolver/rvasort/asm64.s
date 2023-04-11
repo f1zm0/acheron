@@ -43,5 +43,5 @@ nope:
 not_found:
     // returning nullptr
     XORQ AX, AX
-    MOVQ AX, ret+0(FP)
+    MOVQ AX, ret+8(FP)
     RET
