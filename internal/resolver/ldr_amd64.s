@@ -2,7 +2,6 @@
 
 // func getNtdllBaseAddr() uintptr
 TEXT ·getNtdllBaseAddr(SB),NOSPLIT,$0
-
     // TEB->ProcessEnvironmentBlock
     XORQ AX, AX
     MOVQ 0x30(GS), AX
@@ -110,4 +109,3 @@ TEXT ·getExportsAddressOfNameOrdinals(SB),NOSPLIT,$0-16
 
     MOVQ AX, ret+16(FP)
     RET
-

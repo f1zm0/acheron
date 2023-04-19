@@ -5,7 +5,8 @@
 // syscall implementation is a mix of:
 // - https://golang.org/src/runtime/sys_windows_amd64.s
 // - https://github.com/C-Sto/BananaPhone/blob/master/pkg/BananaPhone/asm_x64.s#L96
-// with modifications to support indirect syscall execution via a trampoline in ntdll.dll
+// with custom modifications to support indirect syscall execution 
+// via a trampoline (syscall;ret instruction) in ntdll.dll
 
 // func execIndirectSyscall(ssn uint16, trampoline uintptr, argh ...uintptr) (errcode uint32)
 TEXT ·execIndirectSyscall(SB),NOSPLIT, $0-32
