@@ -19,26 +19,26 @@ type (
 )
 
 type options struct {
-	hasher hashing.HashFunction
+	hashFunction hashing.HashFunction
 }
 
 // WithHashFunction returns an Option that sets a custom hashing or obfuscation function.
 func WithHashFunction(f hashing.HashFunction) Option {
 	return func(o *options) {
-		o.hasher = f
+		o.hashFunction = f
 	}
 }
 
 // New returns a new Acheron instance with the given options, or an error if initialization fails.
 func New(opts ...Option) (*Acheron, error) {
 	options := &options{
-		hasher: hashing.DJB2,
+		hashFunction: hashing.DJB2,
 	}
 	for _, o := range opts {
 		o(options)
 	}
 
-	if r, err := rvasort.NewResolver(options.hasher); err != nil {
+	if r, err := rvasort.NewResolver(options.hashFunction); err != nil {
 		return nil, err
 	} else {
 		return &Acheron{
