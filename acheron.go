@@ -9,8 +9,10 @@ import (
 	"github.com/f1zm0/acheron/pkg/hashing"
 )
 
+// Acheron is the main struct of the acheron package.
 type Acheron struct {
-	resolver resolver.Resolver
+	resolver     resolver.Resolver
+	hashFunction hashing.HashFunction
 }
 
 type (
@@ -42,9 +44,15 @@ func New(opts ...Option) (*Acheron, error) {
 		return nil, err
 	} else {
 		return &Acheron{
-			resolver: r,
+			resolver:     r,
+			hashFunction: options.hashFunction,
 		}, nil
 	}
+}
+
+// HashString is a helper function to hash a string which can be used as first arg for Syscall.
+func (a *Acheron) HashString(s string) uint64 {
+	return a.hashFunction([]byte(s))
 }
 
 // Syscall executes an indirect syscall with the given function hash and arguments.
@@ -54,7 +62,7 @@ func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
 	if err != nil {
 		return err
 	}
-	if errCode := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); errCode != 0 {
+	if errCode := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); errCode != 0 { // !NT_SUCCESS
 		return errors.New(fmt.Sprintf("syscall failed with error code %d", errCode))
 	}
 	return nil
