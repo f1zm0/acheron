@@ -15,26 +15,17 @@ type Acheron struct {
 	hashFunction hashing.HashFunction
 }
 
-type (
-	// Option is a configuration option to configure the Acheron instance.
-	Option func(*options)
-)
+// Option is a configuration option to configure the Acheron instance.
+type Option func(*options)
 
 type options struct {
 	hashFunction hashing.HashFunction
 }
 
-// WithHashFunction returns an Option that sets a custom hashing or obfuscation function.
-func WithHashFunction(f hashing.HashFunction) Option {
-	return func(o *options) {
-		o.hashFunction = f
-	}
-}
-
 // New returns a new Acheron instance with the given options, or an error if initialization fails.
 func New(opts ...Option) (*Acheron, error) {
 	options := &options{
-		hashFunction: hashing.DJB2,
+		hashFunction: hashing.DJB2, // default
 	}
 	for _, o := range opts {
 		o(options)
@@ -50,13 +41,19 @@ func New(opts ...Option) (*Acheron, error) {
 	}
 }
 
+// WithHashFunction returns an Option that sets a custom hashing or obfuscation function.
+func WithHashFunction(f hashing.HashFunction) Option {
+	return func(o *options) {
+		o.hashFunction = f
+	}
+}
+
 // HashString is a helper function to hash a string which can be used as first arg for Syscall.
 func (a *Acheron) HashString(s string) uint64 {
 	return a.hashFunction([]byte(s))
 }
 
-// Syscall executes an indirect syscall with the given function hash and arguments.
-// Returns the error code returned by the syscall is something goes wrong.
+// Syscall executes an indirect syscall with the given function hash and arguments. Returns the error code if it fails.
 func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
 	sys, err := a.resolver.GetSyscall(fnHash)
 	if err != nil {

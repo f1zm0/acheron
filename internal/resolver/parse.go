@@ -38,6 +38,5 @@ func ParseNtdllModule(hashFn hashing.HashFunction) []*Syscall {
 			})
 		}
 	}
-
 	return sysStubs
 }

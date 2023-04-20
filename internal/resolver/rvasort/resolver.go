@@ -17,6 +17,7 @@ type ssnSortResolver struct {
 
 var _ resolver.Resolver = (*ssnSortResolver)(nil)
 
+// NewResolver returns a new resolver that uses the given hash function to resolve syscalls SSNs.
 func NewResolver(h hashing.HashFunction) (resolver.Resolver, error) {
 	r := &ssnSortResolver{
 		hasher: h,
