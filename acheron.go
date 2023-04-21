@@ -1,9 +1,6 @@
 package acheron
 
 import (
-	"errors"
-	"fmt"
-
 	"github.com/f1zm0/acheron/internal/resolver"
 	"github.com/f1zm0/acheron/internal/resolver/rvasort"
 	"github.com/f1zm0/acheron/pkg/hashing"
@@ -52,17 +49,3 @@ func WithHashFunction(f hashing.HashFunction) Option {
 func (a *Acheron) HashString(s string) uint64 {
 	return a.hashFunction([]byte(s))
 }
-
-// Syscall executes an indirect syscall with the given function hash and arguments. Returns the error code if it fails.
-func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
-	sys, err := a.resolver.GetSyscall(fnHash)
-	if err != nil {
-		return err
-	}
-	if errCode := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); errCode != 0 { // !NT_SUCCESS
-		return errors.New(fmt.Sprintf("syscall failed with error code %d", errCode))
-	}
-	return nil
-}
-
-func execIndirectSyscall(ssn uint16, gateAddr uintptr, argh ...uintptr) (errcode uint32)
