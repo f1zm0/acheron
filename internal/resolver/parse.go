@@ -24,12 +24,12 @@ func ParseNtdllModule(hashFn hashing.HashFunction) []*Syscall {
 
 	sysStubs := make([]*Syscall, 0, numberOfNames/4) // Zw* < 25% of all exports
 	for i := uint32(0); i < numberOfNames; i++ {
-		fn := memory.ReadCStringAt(baseAddr, memory.ReadDwordAt(addressOfNames, i*4))
+		fn := memory.ReadCStringAt(baseAddr, memory.ReadDwordAtOffset(addressOfNames, i*4))
 		if fn[0] == 'Z' && fn[1] == 'w' {
 			fn[0] = 'N'
 			fn[1] = 't'
-			nameOrd := memory.ReadWordAt(addressOfNameOrdinals, i*2)
-			rva := memory.ReadDwordAt(addressOfFunctions, uint32(nameOrd*4))
+			nameOrd := memory.ReadWordAtOffset(addressOfNameOrdinals, i*2)
+			rva := memory.ReadDwordAtOffset(addressOfFunctions, uint32(nameOrd*4))
 
 			sysStubs = append(sysStubs, &Syscall{
 				NameHash: hashFn(fn),

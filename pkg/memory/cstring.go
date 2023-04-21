@@ -4,7 +4,7 @@ package memory
 func ReadCStringAt(start uintptr, offset uint32) []byte {
 	var buf []byte
 	for {
-		ch := ReadByteAt(start, offset)
+		ch := ReadByteAtOffset(start, offset)
 		if ch == 0 {
 			break
 		}
