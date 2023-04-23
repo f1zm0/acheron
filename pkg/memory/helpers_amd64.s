@@ -13,7 +13,7 @@ TEXT ·RVA2VA(SB),NOSPLIT,$0-16
 
 
 // func ReadDwordAt(start uintptr, offset uint32) uint32
-TEXT ·ReadDwordAtOffset(SB),NOSPLIT,$0-16
+TEXT ·ReadDwordAt(SB),NOSPLIT,$0-16
     MOVQ start+0(FP), AX
     MOVL offset+8(FP), R8
 
@@ -25,8 +25,8 @@ TEXT ·ReadDwordAtOffset(SB),NOSPLIT,$0-16
     RET
 
 
-// func ReadWordAtOffset(start uintptr, offset uint32) uint16
-TEXT ·ReadWordAtOffset(SB),NOSPLIT,$0-16
+// func ReadWordAt(start uintptr, offset uint32) uint16
+TEXT ·ReadWordAt(SB),NOSPLIT,$0-16
     MOVQ start+0(FP), AX
     MOVL offset+8(FP), R8
 
@@ -38,8 +38,8 @@ TEXT ·ReadWordAtOffset(SB),NOSPLIT,$0-16
     RET
 
 
-// func ReadByteAtOffset(start uintptr, offset uint32) uint8
-TEXT ·ReadByteAtOffset(SB),NOSPLIT,$0-16
+// func ReadByteAt(start uintptr, offset uint32) uint8
+TEXT ·ReadByteAt(SB),NOSPLIT,$0-16
     MOVQ start+0(FP), AX
     MOVL offset+8(FP), R8
 
