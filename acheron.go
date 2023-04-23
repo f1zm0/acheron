@@ -22,7 +22,7 @@ type options struct {
 // New returns a new Acheron instance with the given options, or an error if initialization fails.
 func New(opts ...Option) (*Acheron, error) {
 	options := &options{
-		hashFunction: hashing.DJB2, // default
+		hashFunction: hashing.XorDjb2Hash, // default
 	}
 	for _, o := range opts {
 		o(options)
