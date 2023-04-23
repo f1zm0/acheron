@@ -1,5 +1,5 @@
 <p align="center">
-    <img src=".github/readme-banner.png" title="acheron banner" width="80%"/>
+    <img src=".github/readme_banner.png" title="acheron banner" width="45%"/>
 </p>
 <p align="center">
     <a href="https://github.com/f1zm0/acheron/releases"><img alt="latest release version" src="https://img.shields.io/github/v/release/f1zm0/acheron?color=aabbcc&logo=github&logoColor=white&labelColor=2b2c33"></a>
@@ -73,6 +73,7 @@ For more examples check out the [examples](examples) directory or [hades](https:
 
 ## References
 
+- [Golang UK Conference 2016 - Michael Munday - Dropping Down Go Functions in Assembly](https://www.youtube.com/watch?v=9jpnFmJr2PE&t=1s)
 - https://github.com/am0nsec/HellsGate
 - https://sektor7.net/#!res/2021/halosgate.md
 - https://github.com/trickster0/TartarusGate
@@ -85,11 +86,12 @@ For more examples check out the [examples](examples) directory or [hades](https:
 - https://www.usenix.org/legacy/events/vee06/full_papers/p154-bhansali.pdf
 - https://redops.at/en/blog/direct-syscalls-a-journey-from-high-to-low
 
-## Notes
+
+## Additional Notes
 
 The name is a reference to the [Acheron](https://en.wikipedia.org/wiki/Acheron) river in Greek mythology, which is the river where souls of the dead are carried to the underworld.
 
-> **Info**
+> **Warning** </br>
 > This project has been created for educational purposes only. Don't use it to on systems you don't own. The developer of this project is not responsible for any damage caused by the improper usage of the library.
 
 ## License
