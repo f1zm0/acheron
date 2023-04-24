@@ -6,5 +6,5 @@ const (
 )
 
 func NT_SUCCESS(x uint32) bool {
-	return (x)&(1<<31) != 0 // error if severity bit (MSB) is 0x1
+	return (x)&(1<<31) == 0
 }
