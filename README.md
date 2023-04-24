@@ -61,7 +61,8 @@ func main() {
         panic(err)
     }
 
-    // indirect syscall for NtAllocateVirtualMemory s1 := ach.HashString("NtAllocateVirtualMemory"),
+    // indirect syscall for NtAllocateVirtualMemory
+    s1 := ach.HashString("NtAllocateVirtualMemory")
     if retcode, err := ach.Syscall(
         s1,                                     // function name hash
         hSelf,                                  // arg1: _In_     HANDLE ProcessHandle,
