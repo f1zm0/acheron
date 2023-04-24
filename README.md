@@ -43,33 +43,69 @@ Minimal example:
 package main
 
 import (
+    "fmt"
     "unsafe"
 
     "github.com/f1zm0/acheron"
 )
 
 func main() {
+    var (
+        baseAddr uintptr
+        hSelf = uintptr(0xffffffffffffffff)
+    )
+
     // creates Acheron instance, resolves SSNs, collects clean trampolines in ntdll.dlll, etc.
     ach, err := acheron.New()
     if err != nil {
         panic(err)
     }
 
-    // make indirect syscall for NtQuerySystemInformation
-    bufferSize := uint32(0)
-    _ = ach.Syscall(
-        ach.HashString("NtQuerySystemInformation"),
-        0x5,                                  // arg1: _In_ SYSTEM_INFORMATION_CLASS SystemInformationClass
-        0,                                    // arg2: _Out_ PVOID SystemInformation
-        uintptr(bufferSize),                  // arg3: _In_ ULONG SystemInformationLength
-        uintptr(unsafe.Pointer(&bufferSize)), // arg4: _Out_opt_ PULONG ReturnLength
+    // indirect syscall for NtAllocateVirtualMemory
+    s1 := ach.HashString("NtAllocateVirtualMemory"),
+	if retcode, err := ach.Syscall(
+		s1,                                     // function name hash
+		hSelf,                                  // arg1: _In_     HANDLE ProcessHandle,
+		uintptr(unsafe.Pointer(&baseAddr)),     // arg2: _Inout_  PVOID *BaseAddress,
+		uintptr(unsafe.Pointer(nil)),           // arg3: _In_     ULONG_PTR ZeroBits,
+		0x1000,                                 // arg4: _Inout_  PSIZE_T RegionSize,
+		windows.MEM_COMMIT|windows.MEM_RESERVE, // arg5: _In_     ULONG AllocationType,
+		windows.PAGE_EXECUTE_READWRITE,         // arg6: _In_     ULONG Protect
+	); err != nil {
+		panic(err)
+	}
+    fmt.Printf(
+        "allocated memory with NtAllocateVirtualMemory (status: 0x%x)\n",
+        retcode,
     )
 
     // ...
 }
 ```
 
-For more concrete examples check out the [examples](examples) directory or [hades](https://github.com/f1zm0/hades) loader repository.
+## Examples
+
+The following examples are included in the repository:
+
+| Example                                       | Description                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [sc_inject](examples/sc_inject)               | Extremely simple process injection PoC, with support for both direct and indirect syscalls |
+| [process_snapshot](examples/process_snapshot) | Using indirect syscalls to take process snapshots with syscalls                            |
+| [custom_hashfunc](examples/custom_hashfunc)   | Example of custom encoding/hashing function that can be used with acheron                  |
+
+Other projects that use `acheron`:
+
+- [hades](https://github.com/f1zm0/hades)
+
+## Contributing
+
+Contributions are welcome! Below are some of the things that it would be nice to have in the future:
+
+- [ ] 32-bit support
+- [ ] Other resolver types (e.g. HalosGate/TartarusGate)
+- [ ] More examples
+
+If you have any suggestions or ideas, feel free to open an issue or a PR.
 
 ## References
 
@@ -89,6 +125,9 @@ For more concrete examples check out the [examples](examples) directory or [hade
 ## Additional Notes
 
 The name is a reference to the [Acheron](https://en.wikipedia.org/wiki/Acheron) river in Greek mythology, which is the river where souls of the dead are carried to the underworld.
+
+> **Note** </br>
+> This project uses [semantic versioning](https://semver.org/). API changes will be reflected in the major version number. </br>
 
 > **Warning** </br>
 > This project has been created for educational purposes only. Don't use it to on systems you don't own. The developer of this project is not responsible for any damage caused by the improper usage of the library.
