@@ -8,6 +8,9 @@
 // with custom modifications to support indirect syscall execution 
 // via a trampoline (syscall;ret instruction) in ntdll.dll
 
+// return type is a 32-bit datatype, as per NTSTATUS definition (https://msdn.microsoft.com/en-us/library/cc704588.aspx)
+// but we use an unsigned integer instead of LONG (int32), since working with uint types is easier in Go
+
 
 // func execIndirectSyscall(ssn uint16, trampoline uintptr, argh ...uintptr) (errcode uint32)
 TEXT ·execIndirectSyscall(SB),NOSPLIT, $0-144
