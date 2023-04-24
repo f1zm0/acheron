@@ -11,7 +11,7 @@
 
 ## About
 
-Acheron is a library inspired by [SysWhisper3](https://github.com/klezVirus/SysWhispers3)/[FreshyCalls](https://github.com/crummie5/FreshyCalls)/[RecycledGate](https://github.com/thefLink/RecycledGate), with most of its functionality implemented in Go assembly. </br>
+Acheron is a library inspired by [SysWhisper3](https://github.com/klezVirus/SysWhispers3)/[FreshyCalls](https://github.com/crummie5/FreshyCalls)/[RecycledGate](https://github.com/thefLink/RecycledGate), with most of the functionality implemented in Go assembly. </br>
 
 `acheron` package can be used to add indirect syscall capabilities to your Golang tradecraft, to bypass AV/EDRs that makes use of usermode hooks and [instrumentation callbacks](https://winternl.com/detecting-manual-syscalls-from-user-mode/) to detect anomalous syscalls that don't return to ntdll.dll, when the call transition back from kernel->userland.
 
@@ -61,19 +61,18 @@ func main() {
         panic(err)
     }
 
-    // indirect syscall for NtAllocateVirtualMemory
-    s1 := ach.HashString("NtAllocateVirtualMemory"),
-	if retcode, err := ach.Syscall(
-		s1,                                     // function name hash
-		hSelf,                                  // arg1: _In_     HANDLE ProcessHandle,
-		uintptr(unsafe.Pointer(&baseAddr)),     // arg2: _Inout_  PVOID *BaseAddress,
-		uintptr(unsafe.Pointer(nil)),           // arg3: _In_     ULONG_PTR ZeroBits,
-		0x1000,                                 // arg4: _Inout_  PSIZE_T RegionSize,
-		windows.MEM_COMMIT|windows.MEM_RESERVE, // arg5: _In_     ULONG AllocationType,
-		windows.PAGE_EXECUTE_READWRITE,         // arg6: _In_     ULONG Protect
-	); err != nil {
-		panic(err)
-	}
+    // indirect syscall for NtAllocateVirtualMemory s1 := ach.HashString("NtAllocateVirtualMemory"),
+    if retcode, err := ach.Syscall(
+        s1,                                     // function name hash
+        hSelf,                                  // arg1: _In_     HANDLE ProcessHandle,
+        uintptr(unsafe.Pointer(&baseAddr)),     // arg2: _Inout_  PVOID *BaseAddress,
+        uintptr(unsafe.Pointer(nil)),           // arg3: _In_     ULONG_PTR ZeroBits,
+        0x1000,                                 // arg4: _Inout_  PSIZE_T RegionSize,
+        windows.MEM_COMMIT|windows.MEM_RESERVE, // arg5: _In_     ULONG AllocationType,
+        windows.PAGE_EXECUTE_READWRITE,         // arg6: _In_     ULONG Protect
+    ); err != nil {
+        panic(err)
+    }
     fmt.Printf(
         "allocated memory with NtAllocateVirtualMemory (status: 0x%x)\n",
         retcode,
@@ -127,7 +126,7 @@ If you have any suggestions or ideas, feel free to open an issue or a PR.
 The name is a reference to the [Acheron](https://en.wikipedia.org/wiki/Acheron) river in Greek mythology, which is the river where souls of the dead are carried to the underworld.
 
 > **Note** </br>
-> This project uses [semantic versioning](https://semver.org/). API changes will be reflected in the major version number. </br>
+> This project uses [semantic versioning](https://semver.org/). Minor and patch releases should not break compatibility with previous versions. Major releases will only be used for major changes that break compatibility with previous versions.
 
 > **Warning** </br>
 > This project has been created for educational purposes only. Don't use it to on systems you don't own. The developer of this project is not responsible for any damage caused by the improper usage of the library.
