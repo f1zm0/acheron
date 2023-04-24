@@ -22,7 +22,7 @@ func main() {
 	}
 
 	// make indirect syscall for NtQuerySystemInformation to figure out the buffer size
-	_ = ach.Syscall(
+	_, _ = ach.Syscall(
 		ach.HashString("NtQuerySystemInformation"), // function name hash
 		0x5,                                  // _In_ SYSTEM_INFORMATION_CLASS SystemInformationClass
 		0,                                    // _Out_ PVOID SystemInformation
@@ -33,7 +33,7 @@ func main() {
 	buf := make([]byte, bufferSize)
 
 	// make indirect syscall to get the process list (in buf)
-	if err := ach.Syscall(
+	if _, err := ach.Syscall(
 		ach.HashString("NtQuerySystemInformation"),
 		0x5, // SystemProcessInformation
 		uintptr(unsafe.Pointer(&buf[0])),
