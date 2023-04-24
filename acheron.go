@@ -22,7 +22,7 @@ type options struct {
 }
 
 // stub for asm implementation
-func execIndirectSyscall(ssn uint16, gateAddr uintptr, argh ...uintptr) (errcode uint32)
+func execIndirectSyscall(ssn uint16, gateAddr uintptr, argh ...uintptr) uint32
 
 // New returns a new Acheron instance with the given options, or an error if initialization fails.
 func New(opts ...Option) (*Acheron, error) {
@@ -58,20 +58,21 @@ func (a *Acheron) HashString(s string) uint64 {
 // GetSyscall returns the Syscall struct for the given function hash.
 func (a *Acheron) GetSyscall(fnHash uint64) (*resolver.Syscall, error) {
 	if sys := a.resolver.GetSyscall(fnHash); sys == nil {
-		return nil, fmt.Errorf("failed with code: %d", ErrSyscallNotFound)
+		return nil, fmt.Errorf("failed with code: 0x%x", ErrSyscallNotFound)
 	} else {
 		return sys, nil
 	}
 }
 
-// Syscall executes an indirect syscall with the given function hash and arguments. Returns the error code if it fails.
-func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
-	if sys := a.resolver.GetSyscall(fnHash); sys == nil {
-		return fmt.Errorf("failed with: %d", ErrSyscallNotFound)
-	} else {
-		if st := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); !NT_SUCCESS(st) {
-			return fmt.Errorf("failed with: %d", st)
-		}
+// Syscall makes an indirect syscall with the provided arguments. Returns the status code and an error message if it fails.
+func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) (uint32, error) {
+	sys := a.resolver.GetSyscall(fnHash)
+	if sys == nil {
+		return ErrSyscallNotFound, fmt.Errorf("failed with: 0x%x", ErrSyscallNotFound)
 	}
-	return nil
+	st := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...)
+	if !NT_SUCCESS(st) {
+		return st, fmt.Errorf("failed with code: 0x%x", st)
+	}
+	return st, nil
 }
