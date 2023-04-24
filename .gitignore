@@ -4,3 +4,4 @@ dist/
 test_files/
 test_scripts/
 test/
+*.exe
