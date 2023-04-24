@@ -16,14 +16,14 @@ func main() {
 	bufferSize := uint32(0)
 
 	// creates Acheron instance, resolves SSNs, collects clean trampolines in ntdll.dlll, etc.
-	acheron, err := acheron.New()
+	ach, err := acheron.New()
 	if err != nil {
 		panic(err)
 	}
 
 	// make indirect syscall for NtQuerySystemInformation to figure out the buffer size
-	_ = acheron.Syscall(
-		acheron.HashString("NtQuerySystemInformation"), // function name hash
+	_ = ach.Syscall(
+		ach.HashString("NtQuerySystemInformation"), // function name hash
 		0x5,                                  // _In_ SYSTEM_INFORMATION_CLASS SystemInformationClass
 		0,                                    // _Out_ PVOID SystemInformation
 		uintptr(bufferSize),                  // _In_ ULONG SystemInformationLength
@@ -33,8 +33,8 @@ func main() {
 	buf := make([]byte, bufferSize)
 
 	// make indirect syscall to get the process list (in buf)
-	if err := acheron.Syscall(
-		acheron.HashString("NtQuerySystemInformation"),
+	if err := ach.Syscall(
+		ach.HashString("NtQuerySystemInformation"),
 		0x5, // SystemProcessInformation
 		uintptr(unsafe.Pointer(&buf[0])),
 		uintptr(bufferSize),

@@ -11,6 +11,7 @@ import (
 	"github.com/f1zm0/acheron"
 )
 
+// custom encoding/hashing function implementation that complies with the acheron.HashFunction type
 func customXORSHA1(s []byte) uint64 {
 	key := []byte{0xde, 0xad, 0xbe, 0xef}
 	for i := 0; i < len(s); i++ {
@@ -22,7 +23,7 @@ func customXORSHA1(s []byte) uint64 {
 
 func main() {
 	// creates Acheron instance, resolves SSNs, collects clean trampolines in ntdll.dlll, etc.
-	acheron, err := acheron.New(
+	ach, err := acheron.New(
 		// Customize instance with fucntional options
 		acheron.WithHashFunction(customXORSHA1),
 	)
@@ -30,7 +31,12 @@ func main() {
 		panic(err)
 	}
 
-	// you can calc the hashes using both acheron.HashString or customXorFn
-	ntqsi := acheron.HashString("NtSetQueryInformationProcess")
+	// having used a custom func, you can now calc the hashes
+	// using both <acheron_instance>.HashString() or customXorFn()
+
+	ntqsi := ach.HashString("NtSetQueryInformationProcess")
 	fmt.Printf("NtSetQueryInformationProcess: 0x%x\r\n", ntqsi)
+
+	ntavm := customXORSHA1([]byte("NtAllocateVirtualMemory"))
+	fmt.Printf("NtAllocateVirtualMemory: 0x%x\r\n", ntavm)
 }

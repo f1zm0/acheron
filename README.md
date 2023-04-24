@@ -1,5 +1,5 @@
 <p align="center">
-    <img src=".github/readme_banner.png" title="acheron banner" width="45%"/>
+    <img src=".github/readme_banner.png" title="acheron banner" width="55%"/>
 </p>
 <p align="center">
     <a href="https://github.com/f1zm0/acheron/releases"><img alt="latest release version" src="https://img.shields.io/github/v/release/f1zm0/acheron?color=aabbcc&logo=github&logoColor=white&labelColor=2b2c33"></a>
@@ -33,7 +33,7 @@ The following steps are performed when creating a new syscall proxy instance:
 
 ## Quickstart
 
-Integrating `acheron` into your offsec tools is pretty easy. 
+Integrating `acheron` into your offsec tools is pretty easy.
 
 You just need to call `acheron.New()` to create a syscall proxy instance and use `acheron.Syscall()` to make an indirect syscall for `Nt*` APIs.
 
@@ -50,15 +50,15 @@ import (
 
 func main() {
     // creates Acheron instance, resolves SSNs, collects clean trampolines in ntdll.dlll, etc.
-    acheron, err := acheron.New()
+    ach, err := acheron.New()
     if err != nil {
         panic(err)
     }
 
     // make indirect syscall for NtQuerySystemInformation
     bufferSize := uint32(0)
-    _ = acheron.Syscall(
-        acheron.HashString("NtQuerySystemInformation"),
+    _ = ach.Syscall(
+        ach.HashString("NtQuerySystemInformation"),
         0x5,                                  // arg1: _In_ SYSTEM_INFORMATION_CLASS SystemInformationClass
         0,                                    // arg2: _Out_ PVOID SystemInformation
         uintptr(bufferSize),                  // arg3: _In_ ULONG SystemInformationLength
@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-For more examples check out the [examples](examples) directory or [hades](https://github.com/f1zm0/hades) loader repository.
+For more concrete examples check out the [examples](examples) directory or [hades](https://github.com/f1zm0/hades) loader repository.
 
 ## References
 
@@ -85,7 +85,6 @@ For more examples check out the [examples](examples) directory or [hades](https:
 - https://winternl.com/detecting-manual-syscalls-from-user-mode/
 - https://www.usenix.org/legacy/events/vee06/full_papers/p154-bhansali.pdf
 - https://redops.at/en/blog/direct-syscalls-a-journey-from-high-to-low
-
 
 ## Additional Notes
 
