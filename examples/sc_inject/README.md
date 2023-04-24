@@ -1,8 +1,8 @@
-# Inject
+# sc_inject
 
-Extremely simple shellcode injector PoC, that injects calc shellcode using `NtAllocateVirtualMemory`+`NtWriteVirtualMemory`+`NtCreateThreadEx`.
+Extremely simple shellcode injector PoC, that injects calc shellcode using syscalls for `NtAllocateVirtualMemory`+`NtWriteVirtualMemory`+`NtCreateThreadEx`.
 
-Using build tags, you can compile both the direct and indirect syscall versions of the injector, if you want to run them against defensive tools and see the detection for each technique.
+Using build tags, you can compile both the direct and indirect syscall versions of the injector, if you want to run them against defensive tools to check out the detection and compare the IOCs of each technique.
 
 ```bash
 # indirect syscall version (default)
