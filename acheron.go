@@ -57,17 +57,21 @@ func (a *Acheron) HashString(s string) uint64 {
 
 // GetSyscall returns the Syscall struct for the given function hash.
 func (a *Acheron) GetSyscall(fnHash uint64) (*resolver.Syscall, error) {
-	return a.resolver.GetSyscall(fnHash)
+	if sys := a.resolver.GetSyscall(fnHash); sys == nil {
+		return nil, fmt.Errorf("failed with code: %d", ErrSyscallNotFound)
+	} else {
+		return sys, nil
+	}
 }
 
 // Syscall executes an indirect syscall with the given function hash and arguments. Returns the error code if it fails.
 func (a *Acheron) Syscall(fnHash uint64, args ...uintptr) error {
-	sys, err := a.resolver.GetSyscall(fnHash)
-	if err != nil {
-		return err
-	}
-	if errCode := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); errCode < 0 { // !NT_SUCCESS
-		return fmt.Errorf("syscall failed with error code %d", errCode)
+	if sys := a.resolver.GetSyscall(fnHash); sys == nil {
+		return fmt.Errorf("failed with: %d", ErrSyscallNotFound)
+	} else {
+		if st := execIndirectSyscall(sys.SSN, sys.TrampolineAddr, args...); !NT_SUCCESS(st) {
+			return fmt.Errorf("failed with: %d", st)
+		}
 	}
 	return nil
 }

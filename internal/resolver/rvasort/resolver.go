@@ -1,8 +1,6 @@
 package rvasort
 
 import (
-	"errors"
-	"fmt"
 	"sort"
 
 	"github.com/f1zm0/acheron/internal/resolver"
@@ -51,9 +49,10 @@ func NewResolver(h hashing.HashFunction) (resolver.Resolver, error) {
 	return r, nil
 }
 
-func (r *ssnSortResolver) GetSyscall(fnHash uint64) (*resolver.Syscall, error) {
+// GetSyscall returns the Syscall struct for the given function hash, or nil if not found.
+func (r *ssnSortResolver) GetSyscall(fnHash uint64) *resolver.Syscall {
 	if v, ok := r.syscallStubs[fnHash]; ok {
-		return v, nil
+		return v
 	}
-	return nil, errors.New(fmt.Sprintf("syscall with hash %d not found", fnHash))
+	return nil
 }
