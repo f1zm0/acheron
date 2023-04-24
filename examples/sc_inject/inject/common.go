@@ -9,8 +9,7 @@ var (
 )
 
 const (
-	nullptr    = uintptr(0)
-	NT_SUCCESS = uint32(0)
+	nullptr = uintptr(0)
 )
 
 func execDirectSyscall(callID uint16, argh ...uintptr) (errcode uint32)
