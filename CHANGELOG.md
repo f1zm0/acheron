@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/f1zm0/acheron/compare/v1.0.0...v1.0.1) (2023-04-25)
+
+
+### Misc
+
+* add installation command to main readme ([8e00f79](https://github.com/f1zm0/acheron/commit/8e00f798a893b34fc43a025c2743642f774a81e4))
+* fix badges in main readme ([90c9fb9](https://github.com/f1zm0/acheron/commit/90c9fb93fde88ac9d0f27b478a5d127d16b52a99))
+* fix goreport badge and add twitter one ([d2107eb](https://github.com/f1zm0/acheron/commit/d2107eb9bac3ce3bcd83ab4495a6cc3e2fa4293a))
+
 ## 1.0.0 (2023-04-24)
 
 ### Features
