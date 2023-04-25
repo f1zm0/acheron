@@ -34,9 +34,13 @@ The following steps are performed when creating a new syscall proxy instance:
 
 ## Quickstart
 
-Integrating `acheron` into your offsec tools is pretty easy.
+Integrating `acheron` into your offsec tools is pretty easy. You can install the package with:
 
-You just need to call `acheron.New()` to create a syscall proxy instance and use `acheron.Syscall()` to make an indirect syscall for `Nt*` APIs.
+```sh
+go get -u github.com/f1zm0/acheron
+```
+
+Then just need to call `acheron.New()` to create a syscall proxy instance and use `acheron.Syscall()` to make an indirect syscall for `Nt*` APIs.
 
 Minimal example:
 
