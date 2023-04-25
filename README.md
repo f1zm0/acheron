@@ -4,9 +4,10 @@
 <p align="center">
     <a href="https://github.com/f1zm0/acheron/releases"><img alt="latest release version" src="https://img.shields.io/github/v/release/f1zm0/acheron?color=5c5c5c&logo=github&logoColor=white&labelColor=2b2c34"></a>
     <a href="https://pkg.go.dev/github.com/f1zm0/acheron"><img src="https://pkg.go.dev/badge/github.com/f1zm0/acheron.svg" alt="Go Reference"></a>
-    <a href="https://pkg.go.dev/github.com/f1zm0/acheron"><img src="https://goreportcard.com/badge/github.com/f1zm0/acheron" alt="Go Report Card"></a>
+    <a href="https://goreportcard.com/report/github.com/f1zm0/acheron"><img src="https://goreportcard.com/badge/github.com/f1zm0/acheron#a" alt="Go Report Card"></a>
     <a href="https://github.com/f1zm0/acheron"><img src="https://img.shields.io/github/license/f1zm0/acheron?color=5c5c5c&logo=bookstack&logoColor=white&labelColor=2b2c34" alt="project license"></a>
     <a href="https://github.com/f1zm0/acheron/issues"><img alt="Issues" src="https://img.shields.io/github/issues/f1zm0/acheron?logo=dependabot&color=5c5c5c&logoColor=d9e0ee&labelColor=2b2c34"></a>
+    <a href="https://twitter.com/f1zm0" target="_blank"><img alt="Twitter Follow" src="https://img.shields.io/badge/Twitter-00acee?logo=twitter&logoColor=white"></a>
 </p>
 
 ## About
