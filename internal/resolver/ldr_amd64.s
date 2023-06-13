@@ -17,7 +17,7 @@ TEXT ·getNtdllBaseAddr(SB),NOSPLIT,$0
     MOVQ (AX), AX
 
     // PEB->Ldr->InMemoryOrderModuleList->Flink DllBase
-    MOVQ 0x20(AX), AX
+    MOVQ 0xE8(AX), AX
 
     MOVQ AX, ret+0(FP)
     RET
